@@ -1,0 +1,122 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model House {
+  id          String            @id @default(uuid())
+  name        String
+  inviteCode  String            @unique
+  createdAt   DateTime          @default(now())
+  alerts      ActiveAlert[]
+  expenses    Expense[]
+  memberships HouseMembership[]
+  tasks       Task[]
+  notifications Alert[]
+}
+
+model User {
+  id            String             @id @default(uuid())
+  name          String
+  email         String             @unique
+  passwordHash  String
+  karma         Int                @default(100)
+  createdAt     DateTime           @default(now())
+  activeHouseId String?
+  alertsCreated ActiveAlert[]
+  expensesPaid  Expense[]          @relation("ExpensesPaid")
+  expensesReceived Expense[]       @relation("ExpensesReceived")
+  memberships   HouseMembership[]
+  karmaLogs     KarmaTransaction[]
+  tasks         Task[]
+  notifications Alert[]
+}
+
+model Task {
+  id          String    @id @default(uuid())
+  title       String
+  description String?
+  karmaReward Int       @default(5)
+  isDone      Boolean   @default(false)
+  dueDate     DateTime?
+  createdAt   DateTime  @default(now())
+  assigneeId  String?
+  houseId     String
+  assignee    User?     @relation(fields: [assigneeId], references: [id])
+  house       House     @relation(fields: [houseId], references: [id])
+
+  @@index([houseId])
+  @@index([assigneeId])
+}
+
+model Expense {
+  id          String   @id @default(uuid())
+  description String
+  amount      Float
+  category    String?  @default("NORMAL")
+  createdAt   DateTime @default(now())
+  payerId     String
+  receiverId  String?
+  houseId     String
+  house       House    @relation(fields: [houseId], references: [id])
+  payer       User     @relation("ExpensesPaid", fields: [payerId], references: [id])
+  receiver    User?    @relation("ExpensesReceived", fields: [receiverId], references: [id])
+
+  @@index([houseId])
+  @@index([payerId])
+}
+
+model KarmaTransaction {
+  id        String   @id @default(uuid())
+  amount    Int
+  reason    String
+  createdAt DateTime @default(now())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+}
+
+model ActiveAlert {
+  id        String   @id @default(uuid())
+  type      String
+  expiresAt DateTime
+  resolved  Boolean  @default(false)
+  creatorId String
+  houseId   String
+  creator   User     @relation(fields: [creatorId], references: [id])
+  house     House    @relation(fields: [houseId], references: [id])
+
+  @@index([houseId])
+}
+
+model HouseMembership {
+  id        String   @id @default(uuid())
+  userId    String
+  houseId   String
+  role      String   @default("MEMBER")
+  createdAt DateTime @default(now())
+  house     House    @relation(fields: [houseId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@unique([userId, houseId])
+  @@index([houseId])
+  @@index([userId])
+}
+
+model Alert {
+  id        String   @id @default(uuid())
+  type      String   // EXPENSE, SETTLEMENT, TASK
+  message   String
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+  userId    String
+  houseId   String
+  user      User     @relation(fields: [userId], references: [id])
+  house     House    @relation(fields: [houseId], references: [id])
+
+  @@index([userId, houseId])
+}

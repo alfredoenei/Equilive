@@ -1,0 +1,48 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-brand-50: #f0f9ff;
+  --color-brand-100: #e0f2fe;
+  --color-brand-500: #0ea5e9;
+  --color-brand-600: #0284c7;
+  --color-brand-700: #0369a1;
+  
+  --color-navy-deep: #1e293b;
+  --color-emerald-mint: #10b981;
+  --color-coral-soft: #f87171;
+  
+  --color-karma-plus: #10b981;
+  --color-karma-minus: #f43f5e;
+}
+
+@layer base {
+  body {
+    @apply bg-navy-deep text-slate-100 antialiased;
+    font-family: 'Inter', sans-serif;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply w-full bg-brand-600 text-white py-3 px-4 rounded-xl font-semibold shadow-lg shadow-brand-500/20 active:scale-[0.98] transition-all disabled:opacity-50;
+  }
+  
+  .btn-secondary {
+    @apply w-full bg-white text-slate-700 py-3 px-4 rounded-xl font-semibold border border-slate-200 shadow-sm active:scale-[0.98] transition-all;
+  }
+
+  .input-field {
+    @apply w-full bg-white text-slate-900 border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 transition-all;
+  }
+
+  .card {
+    @apply bg-white rounded-2xl p-4 shadow-sm border border-slate-100;
+  }
+}
+
+/* Custom scrollbar for a cleaner mobile feel */
+::-webkit-scrollbar {
+  width: 0px;
+  background: transparent;
+}
