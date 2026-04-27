@@ -10,6 +10,8 @@
 
 **Equilive** is a premium ecosystem designed to eliminate friction in shared housing. It’s not just a task manager; it’s a "Harmony Engine" that balances domestic responsibilities and finances with mathematical precision and a high-end user experience. Built with a "Zero Latency" philosophy, it ensures that living together is actually about living, not arguing.
 
+### 🔗 [Live Demo - equilive.netlify.app](https://equilive.netlify.app)
+
 ---
 
 ## 🇪🇸 Versión en Español
