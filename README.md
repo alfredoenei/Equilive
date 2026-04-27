@@ -75,4 +75,4 @@ Equilive is a high-end platform designed to eradicate shared-housing friction. I
    ```
 
 ---
-**Desarrollado por Alf**, con impronta argentina y estándares de Silicon Valley.
+**Desarrollado por Alf**
