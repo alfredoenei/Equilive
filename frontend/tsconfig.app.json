@@ -17,7 +17,6 @@
 
     /* Linting */
     "noFallthroughCasesInSwitch": true,
-    "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"]
     }
