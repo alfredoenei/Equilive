@@ -182,14 +182,20 @@ export const TasksPage = () => {
                         flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest
                         transition-all duration-300 active:scale-90
                         ${loadingRec
-                          ? 'bg-brand-500/20 text-brand-500 animate-pulse'
+                          ? 'bg-brand-500/20 text-brand-500 border border-brand-500/30'
                           : newTask.title.trim()
                             ? 'bg-brand-500/10 text-brand-500 hover:bg-brand-500/20 border border-brand-500/20'
                             : 'bg-white/5 text-white/15 cursor-not-allowed'}
                       `}
                     >
-                      <Sparkles size={12} className={loadingRec ? 'animate-spin' : ''} />
-                      IA
+                      <Sparkles 
+                        size={12} 
+                        className={`
+                          ${loadingRec ? 'animate-[spin_2s_linear_infinite] text-brand-400' : ''} 
+                          transition-colors
+                        `} 
+                      />
+                      {loadingRec ? 'Analizando...' : 'IA'}
                     </button>
                   </div>
                   <select

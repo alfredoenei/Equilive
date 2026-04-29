@@ -8,6 +8,7 @@ const envSchema = z.object({
   JWT_SECRET: z.string().min(8),
   PORT: z.coerce.number().default(3000),
   NODE_ENV: z.enum(['development', 'test', 'production']).default('development'),
+  GROQ_API_KEY: z.string().optional(),
 });
 
 const _env = envSchema.safeParse(process.env);
