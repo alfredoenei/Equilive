@@ -1,6 +1,7 @@
 import { lazy, Suspense } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { useAuthStore } from './store/useAuthStore';
+import { useNetworkStore } from './store/useNetworkStore';
 
 // Lazy Loaded Pages
 const LoginPage = lazy(() => import('./pages/LoginPage').then(m => ({ default: m.LoginPage })));
@@ -20,14 +21,45 @@ const LoadingScreen = () => (
   </div>
 );
 
+const WakeUpScreen = () => (
+  <div className="fixed inset-0 z-[100] bg-navy-deep/95 backdrop-blur-md flex flex-col items-center justify-center p-6 transition-all duration-500 animate-in fade-in">
+    {/* Premium Glow Background */}
+    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 bg-emerald-mint/10 blur-[100px] rounded-full pointer-events-none" />
+    
+    <div className="relative z-10 flex flex-col items-center">
+      {/* Pulse Logo Indicator */}
+      <div className="relative w-20 h-20 mb-8 flex items-center justify-center">
+        <div className="absolute inset-0 border-4 border-white/5 rounded-full" />
+        <div className="absolute inset-0 border-4 border-emerald-mint border-t-transparent rounded-full animate-spin" />
+        <div className="absolute inset-2 bg-emerald-mint/20 rounded-full animate-pulse" />
+        <div className="absolute inset-4 bg-emerald-mint/30 rounded-full animate-ping" />
+      </div>
 
+      <div className="text-center space-y-3 animate-in slide-in-from-bottom-4 duration-700 delay-150">
+        <h2 className="text-2xl font-black text-white tracking-tight">Despertando el servidor...</h2>
+        <p className="text-white/50 text-sm font-medium px-8 leading-relaxed">
+          Los servidores gratuitos toman una siesta. <br/> 
+          Esto puede tardar unos <span className="text-emerald-mint/80 font-bold">30 segundos</span>.
+        </p>
+      </div>
+      
+      {/* Subtle Slow Progress Bar */}
+      <div className="mt-12 w-64 h-1.5 bg-white/5 rounded-full overflow-hidden">
+        <div className="h-full bg-emerald-mint rounded-full animate-[progress_30s_ease-in-out_forwards]" />
+      </div>
+    </div>
+  </div>
+);
 
 const App = () => {
   const token = useAuthStore((state) => state.token);
   const user = useAuthStore((state) => state.user);
+  const isWakingUpServer = useNetworkStore((state) => state.isWakingUpServer);
 
   return (
-    <BrowserRouter>
+    <>
+      {isWakingUpServer && <WakeUpScreen />}
+      <BrowserRouter>
       <Suspense fallback={<LoadingScreen />}>
         <Routes>
           {/* Public Routes */}
@@ -69,6 +101,7 @@ const App = () => {
         </Routes>
       </Suspense>
     </BrowserRouter>
+    </>
   );
 };
 

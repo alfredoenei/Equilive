@@ -46,3 +46,8 @@
   width: 0px;
   background: transparent;
 }
+
+@keyframes progress {
+  from { width: 0%; }
+  to { width: 100%; }
+}
